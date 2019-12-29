@@ -5,13 +5,11 @@ import math
 
 width = 600
 height = 400
-radius = 20
-amount = 5
+radius = 50
+amount = 2
 balls = []
-
 colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
 
-friction = True
 
 
 class object:
@@ -28,12 +26,12 @@ class object:
 		self.ycor = ycor
 
 def position(x,y):
-	x = random.randint(20, width-20)
-	y = random.randint(20, height-200)
+	x = random.randint(radius, width-radius)
+	y = random.randint(radius, height-200)
 	for ball in balls:
 		if math.sqrt((ball.xcor - x)**2 + (ball.ycor - y)**2) <= radius*2:
-			x = random.randint(20, width-20)
-			y = random.randint(20, height-200)
+			x = random.randint(radius, width-radius)
+			y = random.randint(radius, height-200)
 	return (x,y)
 			
 
@@ -57,50 +55,38 @@ while running:
 
 		for Ball in balls:
 			if ball is not Ball:
+
 				if math.sqrt((ball.xcor - Ball.xcor)**2 + (ball.ycor - Ball.ycor)**2) <= radius*2:
 
-					if ball.xspeed ^ Ball.xspeed:
-						temp = ball.xspeed
-						ball.xspeed = Ball.xspeed
-						Ball.xspeed = temp
+					temp = ball.xspeed
+					ball.xspeed = Ball.xspeed
+					Ball.xspeed = temp
 
-					if ball.yspeed ^ Ball.yspeed:
-						temp = ball.yspeed
-						ball.yspeed = Ball.yspeed
-						Ball.yspeed = temp
+					temp = ball.yspeed
+					ball.yspeed = Ball.yspeed
+					Ball.yspeed = temp
 
 
-		ball.yspeed += 1
 
-		resistance = int(ball.yspeed /3)
-		if ball.ycor + radius>= height:
+		ball.yspeed += 0.1
+
+		if ball.ycor + radius >= height:
 			ball.yspeed *= -1
-			ball.yspeed += 1 + resistance
-			ball.ycor = height - radius
-
-			if ball.xspeed > 0:
-				ball.xspeed -= friction
-			elif ball.xspeed < 0:
-				ball.xspeed += friction
 
 			if ball.yspeed**2 < 2:
 				ball.yspeed = 0
 				
 
-		# elif ball.ycor - radius<= 0:
-		# 	ball.yspeed *= -1
-	
-
-		ball.ycor += ball.yspeed
-
-		if ball.xcor + radius>= width:
+		if ball.xcor + radius >= width:
 			ball.xspeed *= -1
-			ball.xcor = width - radius
 		elif ball.xcor - radius <= 0:
 			ball.xspeed *= -1
-			ball.xcor = radius
+
+
+		ball.ycor += ball.yspeed
 		ball.xcor += ball.xspeed
-		pygame.draw.circle(win, ball.color, (ball.xcor, ball.ycor), ball.rad)
+
+		pygame.draw.circle(win, ball.color, (int(ball.xcor), int(ball.ycor)), ball.rad)
 		
 	pygame.display.update()
-	time.sleep(0.03)
+	time.sleep(0.01)
