@@ -27,13 +27,18 @@ class object:
 
 def position(x,y):
 	x = random.randint(radius, width-radius)
-	y = random.randint(radius, height-200)
+	y = random.randint(radius, height-100)
 	for ball in balls:
 		if math.sqrt((ball.xcor - x)**2 + (ball.ycor - y)**2) <= radius*2:
 			x = random.randint(radius, width-radius)
-			y = random.randint(radius, height-200)
+			y = random.randint(radius, height-100)
 	return (x,y)
-			
+
+
+def convert_y(y):
+	y -= height
+	y *= -1
+	return y
 
 
 for index in range(amount):
@@ -42,6 +47,7 @@ for index in range(amount):
 	speedx = random.randint(-10, 10)
 	balls.append(object(random.choice(colors), radius, speedx, 0))
 	balls[index].move(cor[0],cor[1])
+
 
 pygame.init()
 win = pygame.display.set_mode((width, height))
@@ -68,9 +74,9 @@ while running:
 
 
 
-		ball.yspeed += 0.1
+		ball.yspeed -= 0.1
 
-		if ball.ycor + radius >= height:
+		if ball.ycor - radius <= 0:
 			ball.yspeed *= -1
 
 			if ball.yspeed**2 < 2:
@@ -86,7 +92,7 @@ while running:
 		ball.ycor += ball.yspeed
 		ball.xcor += ball.xspeed
 
-		pygame.draw.circle(win, ball.color, (int(ball.xcor), int(ball.ycor)), ball.rad)
+		pygame.draw.circle(win, ball.color, (int(ball.xcor), int(convert_y(ball.ycor))), ball.rad)
 		
 	pygame.display.update()
 	time.sleep(0.01)
