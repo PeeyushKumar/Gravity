@@ -3,13 +3,13 @@ import time
 import random
 import math
 
+
 width = 600
 height = 400
 radius = 50
 amount = 2
 balls = []
 colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
-
 
 
 class object:
@@ -25,13 +25,14 @@ class object:
 		self.xcor = xcor
 		self.ycor = ycor
 
+
 def position(x,y):
 	x = random.randint(radius, width-radius)
-	y = random.randint(radius, height-100)
+	y = random.randint(radius, height-radius)
 	for ball in balls:
 		if math.sqrt((ball.xcor - x)**2 + (ball.ycor - y)**2) <= radius*2:
 			x = random.randint(radius, width-radius)
-			y = random.randint(radius, height-100)
+			y = random.randint(radius, height-radius)
 	return (x,y)
 
 
@@ -57,11 +58,8 @@ running = True
 while running:
 	win.fill((255,255,255))
 	for ball in balls:
-		
-
 		for Ball in balls:
 			if ball is not Ball:
-
 				if math.sqrt((ball.xcor - Ball.xcor)**2 + (ball.ycor - Ball.ycor)**2) <= radius*2:
 
 					temp = ball.xspeed
@@ -71,7 +69,6 @@ while running:
 					temp = ball.yspeed
 					ball.yspeed = Ball.yspeed
 					Ball.yspeed = temp
-
 
 
 		ball.yspeed -= 0.1
@@ -92,7 +89,9 @@ while running:
 		ball.ycor += ball.yspeed
 		ball.xcor += ball.xspeed
 
+
 		pygame.draw.circle(win, ball.color, (int(ball.xcor), int(convert_y(ball.ycor))), ball.rad)
-		
+
+
 	pygame.display.update()
 	time.sleep(0.01)
