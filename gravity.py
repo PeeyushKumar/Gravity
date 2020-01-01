@@ -12,6 +12,7 @@ balls = []
 colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
 
 
+
 class object:
 	def __init__(self, color, rad, xspeed, yspeed):
 		self.color = color
@@ -24,6 +25,7 @@ class object:
 	def move(self, xcor, ycor):
 		self.xcor = xcor
 		self.ycor = ycor
+
 
 
 def position(x,y):
@@ -60,6 +62,7 @@ while running:
 	for ball in balls:
 		for Ball in balls:
 			if ball is not Ball:
+
 				if math.sqrt((ball.xcor - Ball.xcor)**2 + (ball.ycor - Ball.ycor)**2) <= radius*2:
 
 					temp = ball.xspeed
