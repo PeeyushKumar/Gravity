@@ -12,6 +12,7 @@ balls = []
 colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
 
 
+
 class object:
 	def __init__(self, color, rad, xspeed, yspeed):
 		self.color = color
@@ -33,6 +34,7 @@ def position(x,y):
 		if math.sqrt((ball.xcor - x)**2 + (ball.ycor - y)**2) <= radius*2:
 			x = random.randint(radius, width-radius)
 			y = random.randint(radius, height-radius)
+
 	return (x,y)
 
 
@@ -60,6 +62,7 @@ while running:
 	for ball in balls:
 		for Ball in balls:
 			if ball is not Ball:
+
 				if math.sqrt((ball.xcor - Ball.xcor)**2 + (ball.ycor - Ball.ycor)**2) <= radius*2:
 
 					temp = ball.xspeed
@@ -74,6 +77,7 @@ while running:
 		ball.yspeed -= 0.1
 
 		if ball.ycor - radius <= 0:
+
 			ball.yspeed *= -1
 
 			if ball.yspeed**2 < 2:
