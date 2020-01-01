@@ -3,6 +3,7 @@ import time
 import random
 import math
 
+
 width = 600
 height = 400
 radius = 50
@@ -25,15 +26,22 @@ class object:
 		self.xcor = xcor
 		self.ycor = ycor
 
+
 def position(x,y):
 	x = random.randint(radius, width-radius)
-	y = random.randint(radius, height-200)
+	y = random.randint(radius, height-radius)
 	for ball in balls:
 		if math.sqrt((ball.xcor - x)**2 + (ball.ycor - y)**2) <= radius*2:
 			x = random.randint(radius, width-radius)
-			y = random.randint(radius, height-200)
+			y = random.randint(radius, height-radius)
+
 	return (x,y)
-			
+
+
+def convert_y(y):
+	y -= height
+	y *= -1
+	return y
 
 
 for index in range(amount):
@@ -43,6 +51,7 @@ for index in range(amount):
 	balls.append(object(random.choice(colors), radius, speedx, 0))
 	balls[index].move(cor[0],cor[1])
 
+
 pygame.init()
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Gravity")
@@ -51,8 +60,6 @@ running = True
 while running:
 	win.fill((255,255,255))
 	for ball in balls:
-		
-
 		for Ball in balls:
 			if ball is not Ball:
 
@@ -67,10 +74,10 @@ while running:
 					Ball.yspeed = temp
 
 
+		ball.yspeed -= 0.1
 
-		ball.yspeed += 0.1
+		if ball.ycor - radius <= 0:
 
-		if ball.ycor + radius >= height:
 			ball.yspeed *= -1
 
 			if ball.yspeed**2 < 2:
@@ -86,7 +93,9 @@ while running:
 		ball.ycor += ball.yspeed
 		ball.xcor += ball.xspeed
 
-		pygame.draw.circle(win, ball.color, (int(ball.xcor), int(ball.ycor)), ball.rad)
-		
+
+		pygame.draw.circle(win, ball.color, (int(ball.xcor), int(convert_y(ball.ycor))), ball.rad)
+
+
 	pygame.display.update()
 	time.sleep(0.01)
