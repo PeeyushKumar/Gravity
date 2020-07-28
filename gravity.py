@@ -47,7 +47,7 @@ def convert_y(y):
 for index in range(amount):
 	x = y = 0
 	cor = position(x,y)
-	speedx = random.randint(-10, 10)
+	speedx = random.random()*5
 	balls.append(object(random.choice(colors), radius, speedx, 0))
 	balls[index].move(cor[0],cor[1])
 
