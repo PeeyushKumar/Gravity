@@ -12,7 +12,6 @@ balls = []
 colors = [(27, 38, 44), (15, 76, 117), (50, 130, 184)]
 
 
-
 class object:
 	def __init__(self, color, rad, xspeed, yspeed):
 		self.color = color
@@ -55,6 +54,7 @@ for index in range(amount):
 pygame.init()
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Gravity")
+
 
 running = True
 while running:
