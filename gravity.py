@@ -14,17 +14,37 @@ colors = [(27, 38, 44), (15, 76, 117), (50, 130, 184)]
 
 
 class object:
-	def __init__(self, color, rad, xspeed, yspeed):
+	def __init__(self, color, radius, xspeed, yspeed):
 		self.color = color
 		self.xcor = 0
 		self.ycor = 0
-		self.rad = rad
+		self.radius = radius
 		self.xspeed = xspeed
 		self.yspeed = yspeed
 
 	def move(self, xcor, ycor):
 		self.xcor = xcor
 		self.ycor = ycor
+	
+	def update(self):
+		self.yspeed -= 0.1
+
+		if self.ycor - self.radius <= 0:
+			self.yspeed = abs(self.yspeed)
+
+			if self.yspeed**2 < 2:
+				self.yspeed = 0
+				
+		if self.xcor + radius >= width:
+				self.xspeed = -abs(self.xspeed)
+		
+		if self.xcor - self.radius <= 0:
+			self.xspeed = abs(self.xspeed)
+
+		self.move(self.xcor + self.xspeed, self.ycor + self.yspeed)		
+
+	def draw(self, win):
+		pygame.draw.circle(win, self.color, (int(self.xcor), int(convert_y(self.ycor))), self.radius)
 
 
 def position(x,y):
@@ -62,7 +82,6 @@ while running:
 	for ball in balls:
 		for Ball in balls:
 			if ball is not Ball:
-
 				if math.sqrt((ball.xcor - Ball.xcor)**2 + (ball.ycor - Ball.ycor)**2) <= radius*2:
 
 					temp = ball.xspeed
@@ -73,29 +92,8 @@ while running:
 					ball.yspeed = Ball.yspeed
 					Ball.yspeed = temp
 
-
-		ball.yspeed -= 0.1
-
-		if ball.ycor - radius <= 0:
-
-			ball.yspeed *= -1
-
-			if ball.yspeed**2 < 2:
-				ball.yspeed = 0
-				
-
-		if ball.xcor + radius >= width:
-			ball.xspeed *= -1
-		elif ball.xcor - radius <= 0:
-			ball.xspeed *= -1
-
-
-		ball.ycor += ball.yspeed
-		ball.xcor += ball.xspeed
-
-
-		pygame.draw.circle(win, ball.color, (int(ball.xcor), int(convert_y(ball.ycor))), ball.rad)
-
+		ball.update()
+		ball.draw(win)
 
 	pygame.display.update()
 	time.sleep(0.01)
