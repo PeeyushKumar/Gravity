@@ -44,7 +44,7 @@ class object:
 		self.move(self.xcor + self.xspeed, self.ycor + self.yspeed)		
 
 	def draw(self, win):
-		pygame.draw.circle(win, self.color, (int(self.xcor), int(convert_y(self.ycor))), self.radius)
+		pygame.draw.circle(win, self.color, (self.xcor, convert_y(self.ycor)), self.radius)
 
 
 def position(x,y):
