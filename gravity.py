@@ -6,21 +6,21 @@ import math
 
 width = 600
 height = 400
-radius = 100
-amount = 2
+radius = 50
+amount = 3
 balls = []
 colors = [(27, 38, 44), (15, 76, 117), (50, 130, 184)]
 
 
 
 class object:
-	def __init__(self, color, radius, xspeed, yspeed):
-		self.color = color
+	def __init__(self, radius):
+		self.color = colors[0]
 		self.xcor = 0
 		self.ycor = 0
 		self.radius = radius
-		self.xspeed = xspeed
-		self.yspeed = yspeed
+		self.xspeed = 0
+		self.yspeed = 0
 
 	def move(self, xcor, ycor):
 		self.xcor = xcor
@@ -46,7 +46,13 @@ class object:
 	def draw(self, win):
 		pygame.draw.circle(win, self.color, (self.xcor, convert_y(self.ycor)), self.radius)
 	
-	def collidesWith(self, ball):
+	def collidesWithAny(self):
+		for ball in balls:
+			if self.checkForCollision(ball):
+				return ball
+		return False
+			
+	def checkForCollision(self, ball):
 		return ball is not self and math.sqrt((ball.xcor - self.xcor)**2 + (ball.ycor - self.ycor)**2) <= ball.radius+self.radius
 
 	def collide(self, ball):
@@ -58,16 +64,18 @@ class object:
 		ball.yspeed = self.yspeed
 		self.yspeed = temp
 
-
-def position(x,y):
-	x = random.randint(radius, width-radius)
-	y = random.randint(radius, height-radius)
-	for ball in balls:
-		if math.sqrt((ball.xcor - x)**2 + (ball.ycor - y)**2) <= radius*2:
-			x = random.randint(radius, width-radius)
-			y = random.randint(radius, height-radius)
-
-	return (x,y)
+	def randomize(self):
+		self.xspeed = (random.random()-0.5) * 5
+		self.yspeed = (random.random()-0.5) * 5
+		self.color = random.choice(colors)
+		self.setRandomPosition()
+		while self.collidesWithAny():
+			self.setRandomPosition()
+	
+	def setRandomPosition(self):
+		self.xcor = random.randint(self.radius, width-self.radius)
+		self.ycor = random.randint(self.radius, height-self.radius)
+			
 
 
 def convert_y(y):
@@ -77,11 +85,9 @@ def convert_y(y):
 
 
 for index in range(amount):
-	x = y = 0
-	cor = position(x,y)
-	speedx = random.random()*5
-	balls.append(object(random.choice(colors), radius, speedx, 0))
-	balls[index].move(cor[0],cor[1])
+	ball = object(radius)
+	ball.randomize()
+	balls.append(ball)
 
 
 pygame.init()
@@ -92,9 +98,10 @@ running = True
 while running:
 	win.fill((255,255,255))
 	for ball in balls:
-		for Ball in balls:
-			if ball.collidesWith(Ball):
-				ball.collide(Ball)
+
+		ball2 = ball.collidesWithAny()
+		if ball2:
+			ball.collide(ball2)
 
 		ball.update()
 		ball.draw(win)
