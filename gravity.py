@@ -85,16 +85,15 @@ while running:
 	win.fill((255,255,255))
 	for ball in balls:
 		for Ball in balls:
-			if ball is not Ball:
-				if ball.collidesWith(Ball):
+			if ball.collidesWith(Ball):
 
-					temp = ball.xspeed
-					ball.xspeed = Ball.xspeed
-					Ball.xspeed = temp
+				temp = ball.xspeed
+				ball.xspeed = Ball.xspeed
+				Ball.xspeed = temp
 
-					temp = ball.yspeed
-					ball.yspeed = Ball.yspeed
-					Ball.yspeed = temp
+				temp = ball.yspeed
+				ball.yspeed = Ball.yspeed
+				Ball.yspeed = temp
 
 		ball.update()
 		ball.draw(win)
