@@ -11,6 +11,7 @@ amount = 3
 balls = []
 colors = [(27, 38, 44), (15, 76, 117), (50, 130, 184)]
 airDragFactor = 0.001
+frictionCoefficient = 0.01
 allowedOverlapOffset = 3
 fps = 60
 
@@ -34,9 +35,10 @@ class object:
 
 		if self.ycor - self.radius <= 0:
 			self.yspeed = abs(self.yspeed)
-
-			if self.yspeed**2 < 2:
+			
+			if self.yspeed < 1:
 				self.yspeed = 0
+				self.xspeed -= self.xspeed*frictionCoefficient
 				
 		if self.xcor + radius >= width:
 				self.xspeed = -abs(self.xspeed)
