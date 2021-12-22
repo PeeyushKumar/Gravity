@@ -45,6 +45,10 @@ class object:
 
 	def draw(self, win):
 		pygame.draw.circle(win, self.color, (self.xcor, convert_y(self.ycor)), self.radius)
+	
+	def collidesWith(self, ball):
+		return ball is not self and math.sqrt((ball.xcor - self.xcor)**2 + (ball.ycor - self.ycor)**2) <= ball.radius+self.radius
+
 
 
 def position(x,y):
@@ -82,7 +86,7 @@ while running:
 	for ball in balls:
 		for Ball in balls:
 			if ball is not Ball:
-				if math.sqrt((ball.xcor - Ball.xcor)**2 + (ball.ycor - Ball.ycor)**2) <= radius*2:
+				if ball.collidesWith(Ball):
 
 					temp = ball.xspeed
 					ball.xspeed = Ball.xspeed
