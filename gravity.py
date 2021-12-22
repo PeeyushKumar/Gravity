@@ -96,6 +96,8 @@ pygame.init()
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Gravity")
 
+print("Press Q to exit.")
+
 running = True
 while running:
 	win.fill((255,255,255))
@@ -110,3 +112,8 @@ while running:
 
 	pygame.display.update()
 	time.sleep(0.01)
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+			running=False
+
+pygame.quit()
