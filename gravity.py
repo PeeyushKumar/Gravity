@@ -11,8 +11,8 @@ amount = 3
 balls = []
 colors = [(27, 38, 44), (15, 76, 117), (50, 130, 184)]
 airDragFactor = 0.001
-allowedOverlapoffset = 5
-
+allowedOverlapOffset = 3
+fps = 60
 
 class object:
 	def __init__(self, radius):
@@ -56,7 +56,7 @@ class object:
 		return False
 			
 	def checkForCollision(self, ball):
-		return ball is not self and math.sqrt((ball.xcor - self.xcor)**2 + (ball.ycor - self.ycor)**2) <= ball.radius+self.radius-allowedOverlapoffset
+		return ball is not self and math.sqrt((ball.xcor - self.xcor)**2 + (ball.ycor - self.ycor)**2) <= ball.radius+self.radius-allowedOverlapOffset
 
 	def collide(self, ball):
 		temp = ball.xspeed
@@ -115,7 +115,7 @@ while running:
 				ball.collide(ball2)
 			ball.update()
 
-	time.sleep(0.01)
+	time.sleep(1/fps)
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
