@@ -13,6 +13,7 @@ colors = [(27, 38, 44), (15, 76, 117), (50, 130, 184)]
 airDragFactor = 0.001
 frictionCoefficient = 0.01
 allowedOverlapOffset = 3
+accelerationDueToGravity = 0.1
 fps = 60
 
 class object:
@@ -29,7 +30,7 @@ class object:
 		self.ycor = ycor
 	
 	def update(self):
-		self.yspeed -= 0.1
+		self.yspeed -= accelerationDueToGravity
 		self.yspeed -= self.yspeed*airDragFactor
 		self.xspeed -= self.xspeed*airDragFactor
 
