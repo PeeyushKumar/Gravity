@@ -10,7 +10,7 @@ radius = 50
 amount = 3
 balls = []
 colors = [(27, 38, 44), (15, 76, 117), (50, 130, 184)]
-
+airDragFactor = 0.001
 
 
 class object:
@@ -28,6 +28,8 @@ class object:
 	
 	def update(self):
 		self.yspeed -= 0.1
+		self.yspeed -= self.yspeed*airDragFactor
+		self.xspeed -= self.xspeed*airDragFactor
 
 		if self.ycor - self.radius <= 0:
 			self.yspeed = abs(self.yspeed)
