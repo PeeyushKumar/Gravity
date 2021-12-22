@@ -11,6 +11,7 @@ amount = 3
 balls = []
 colors = [(27, 38, 44), (15, 76, 117), (50, 130, 184)]
 airDragFactor = 0.001
+allowedOverlapoffset = 5
 
 
 class object:
@@ -55,7 +56,7 @@ class object:
 		return False
 			
 	def checkForCollision(self, ball):
-		return ball is not self and math.sqrt((ball.xcor - self.xcor)**2 + (ball.ycor - self.ycor)**2) <= ball.radius+self.radius
+		return ball is not self and math.sqrt((ball.xcor - self.xcor)**2 + (ball.ycor - self.ycor)**2) <= ball.radius+self.radius-allowedOverlapoffset
 
 	def collide(self, ball):
 		temp = ball.xspeed
@@ -96,24 +97,33 @@ pygame.init()
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Gravity")
 
-print("Press Q to exit.")
+print("Press Space to pause, Q to exit.")
 
+paused = False
 running = True
 while running:
 	win.fill((255,255,255))
+	
 	for ball in balls:
-
-		ball2 = ball.collidesWithAny()
-		if ball2:
-			ball.collide(ball2)
-
-		ball.update()
 		ball.draw(win)
-
 	pygame.display.update()
+
+	if not paused:
+		for ball in balls:	
+			ball2 = ball.collidesWithAny()
+			if ball2:
+				ball.collide(ball2)
+			ball.update()
+
 	time.sleep(0.01)
+
 	for event in pygame.event.get():
-		if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-			running=False
+		if event.type == pygame.QUIT:
+			running = False
+		elif event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_q:
+				running = False
+			elif event.key == pygame.K_SPACE:
+				paused = not paused
 
 pygame.quit()
