@@ -6,7 +6,7 @@ import math
 
 width = 600
 height = 400
-radius = 50
+radius = 100
 amount = 2
 balls = []
 colors = [(27, 38, 44), (15, 76, 117), (50, 130, 184)]
@@ -49,6 +49,14 @@ class object:
 	def collidesWith(self, ball):
 		return ball is not self and math.sqrt((ball.xcor - self.xcor)**2 + (ball.ycor - self.ycor)**2) <= ball.radius+self.radius
 
+	def collide(self, ball):
+		temp = ball.xspeed
+		ball.xspeed = self.xspeed
+		self.xspeed = temp
+
+		temp = ball.yspeed
+		ball.yspeed = self.yspeed
+		self.yspeed = temp
 
 
 def position(x,y):
@@ -86,14 +94,7 @@ while running:
 	for ball in balls:
 		for Ball in balls:
 			if ball.collidesWith(Ball):
-
-				temp = ball.xspeed
-				ball.xspeed = Ball.xspeed
-				Ball.xspeed = temp
-
-				temp = ball.yspeed
-				ball.yspeed = Ball.yspeed
-				Ball.yspeed = temp
+				ball.collide(Ball)
 
 		ball.update()
 		ball.draw(win)
