@@ -3,22 +3,13 @@ import time
 import random
 import math
 
+from settings import *
 
-width = 600
-height = 400
-radius = 50
-amount = 3
 balls = []
-colors = [(27, 38, 44), (15, 76, 117), (50, 130, 184)]
-airDragFactor = 0.001
-frictionCoefficient = 0.01
-allowedOverlapOffset = 3
-accelerationDueToGravity = 0.1
-fps = 60
 
 class object:
 	def __init__(self, radius):
-		self.color = colors[0]
+		self.color = COLORS[0]
 		self.xcor = 0
 		self.ycor = 0
 		self.radius = radius
@@ -30,18 +21,18 @@ class object:
 		self.ycor = ycor
 	
 	def update(self):
-		self.yspeed -= accelerationDueToGravity
-		self.yspeed -= self.yspeed*airDragFactor
-		self.xspeed -= self.xspeed*airDragFactor
+		self.yspeed -= ACCELERATION_DUE_TO_GRAVITY
+		self.yspeed -= self.yspeed * AIR_DRAG_FACTOR
+		self.xspeed -= self.xspeed * AIR_DRAG_FACTOR
 
 		if self.ycor - self.radius <= 0:
 			self.yspeed = abs(self.yspeed)
 			
 			if self.yspeed < 1:
 				self.yspeed = 0
-				self.xspeed -= self.xspeed*frictionCoefficient
+				self.xspeed -= self.xspeed * FRICTION_COEFFICIENT
 				
-		if self.xcor + radius >= width:
+		if self.xcor + RADIUS >= WIDTH:
 				self.xspeed = -abs(self.xspeed)
 		
 		if self.xcor - self.radius <= 0:
@@ -59,7 +50,7 @@ class object:
 		return False
 			
 	def checkForCollision(self, ball):
-		return ball is not self and math.sqrt((ball.xcor - self.xcor)**2 + (ball.ycor - self.ycor)**2) <= ball.radius+self.radius-allowedOverlapOffset
+		return ball is not self and math.sqrt((ball.xcor - self.xcor)**2 + (ball.ycor - self.ycor)**2) <= ball.radius+self.radius-ALLOWED_OVERLAP_OFFSET
 
 	def collide(self, ball):
 		temp = ball.xspeed
@@ -73,31 +64,31 @@ class object:
 	def randomize(self):
 		self.xspeed = (random.random()-0.5) * 5
 		self.yspeed = (random.random()-0.5) * 5
-		self.color = random.choice(colors)
+		self.color = random.choice(COLORS)
 		self.setRandomPosition()
 		while self.collidesWithAny():
 			self.setRandomPosition()
 	
 	def setRandomPosition(self):
-		self.xcor = random.randint(self.radius, width-self.radius)
-		self.ycor = random.randint(self.radius, height-self.radius)
+		self.xcor = random.randint(self.radius, WIDTH - self.radius)
+		self.ycor = random.randint(self.radius, HEIGHT - self.radius)
 			
 
 
 def convert_y(y):
-	y -= height
+	y -= HEIGHT
 	y *= -1
 	return y
 
 
-for index in range(amount):
-	ball = object(radius)
+for index in range(AMOUNT):
+	ball = object(RADIUS)
 	ball.randomize()
 	balls.append(ball)
 
 
 pygame.init()
-win = pygame.display.set_mode((width, height))
+win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Gravity")
 
 print("Press Space to pause, Q to exit.")
@@ -118,7 +109,7 @@ while running:
 				ball.collide(ball2)
 			ball.update()
 
-	time.sleep(1/fps)
+	time.sleep(1/FPS)
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
