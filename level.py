@@ -13,12 +13,21 @@ class Level:
 
         for _ in range(AMOUNT):
             ball = Ball(RADIUS, [self.visible_sprites, self.collision_sprites], self.collision_sprites)
-            self.balls.append(ball)        
+            self.balls.append(ball)
+
+    def collider(self) -> None:
+        for sprite1 in self.collision_sprites:
+            for sprite2 in self.collision_sprites:
+                
+                if sprite1.collides_with(sprite2):
+                    sprite1.resolve_collision(sprite2)
 
 
     def update(self) -> None:
 
-        for ball in self.balls:	
+        self.collider()
+
+        for ball in self.balls:
             ball.update()
 
         self.visible_sprites.draw(self.screen)

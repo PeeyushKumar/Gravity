@@ -10,6 +10,9 @@ class Ball(pygame.sprite.Sprite):
         self.speed = pygame.Vector2((random.random()-0.5)*10, (random.random()-0.5)*10)
         self.color = random.choice(COLORS)
         self.radius = radius
+
+        self.collision_sprites = collision_sprites
+        self.colliding_force = pygame.Vector2(0, 0)
         
         self.image = pygame.Surface((radius * 2, radius * 2))
         self.image.fill('white')
@@ -18,16 +21,13 @@ class Ball(pygame.sprite.Sprite):
         
         pygame.draw.circle(self.image, self.color, (radius, radius), radius)
 
-        self.collision_sprites = collision_sprites
     
     def update(self) -> None: 
 
         self.speed += ACCELERATION_DUE_TO_GRAVITY
 
-        for sprite in self.collision_sprites:
-            if self.collidesWith(sprite):
-                self.resolveCollision(sprite)
-
+        self.speed += self.colliding_force
+        self.colliding_force *= 0
 
         if self.rect.left <= 0:
             self.speed.x = abs(self.speed.x)
@@ -43,20 +43,14 @@ class Ball(pygame.sprite.Sprite):
         self.rect.center = self.position
 
             
-    def collidesWith(self, other) -> bool:
+    def collides_with(self, other) -> bool:
+        
+        return other is not self \
+            and (self.position - other.position).magnitude() <= other.radius + self.radius - ALLOWED_OVERLAP_OFFSET
 
-        pos_self = self.position
-        pos_other = other.position
+    def resolve_collision(self, other) -> None:
 
-        return other is not self and (pos_self - pos_other).magnitude() <= other.radius+self.radius-ALLOWED_OVERLAP_OFFSET
+        direction = (other.position  - self.position).normalize()
 
-    def resolveCollision(self, other) -> None:
-
-        direction = self.position - other.position
-        direction = direction.normalize()
-
-        force_on_self = direction * other.speed.magnitude()
-        force_on_other = direction * -1 * self.speed.magnitude()
-
-        self.speed += force_on_self * 0.4
-        other.speed += force_on_other * 0.4
+        self.colliding_force += -direction * self.speed.dot(direction)
+        other.colliding_force += direction * self.speed.dot(direction)
