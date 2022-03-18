@@ -45,7 +45,8 @@ class Ball(pygame.sprite.Sprite):
 
     def update_colliding_forces(self) -> None:
         
-        self.resolve_collision_with_mouse()
+        if INTERACT_WITH_MOUSE:
+            self.resolve_collision_with_mouse()
 
         for sprite in self.collision_sprites:
             if self.collides_with(sprite):
