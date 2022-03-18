@@ -42,11 +42,19 @@ class Ball(pygame.sprite.Sprite):
         self.position += self.speed
         self.rect.center = self.position
 
-            
+
+    def update_colliding_forces(self) -> None:
+
+        for sprite in self.collision_sprites:
+                if self.collides_with(sprite):
+                    self.resolve_collision(sprite)
+
+
     def collides_with(self, other) -> bool:
-        
+
         return other is not self \
             and (self.position - other.position).magnitude() <= other.radius + self.radius - ALLOWED_OVERLAP_OFFSET
+
 
     def resolve_collision(self, other) -> None:
 
