@@ -44,10 +44,12 @@ class Ball(pygame.sprite.Sprite):
 
 
     def update_colliding_forces(self) -> None:
+        
+        self.resolve_collision_with_mouse()
 
         for sprite in self.collision_sprites:
-                if self.collides_with(sprite):
-                    self.resolve_collision(sprite)
+            if self.collides_with(sprite):
+                self.resolve_collision(sprite)
 
 
     def collides_with(self, other) -> bool:
@@ -62,3 +64,11 @@ class Ball(pygame.sprite.Sprite):
 
         self.colliding_force += -direction * self.speed.dot(direction)
         other.colliding_force += direction * self.speed.dot(direction)
+
+    def resolve_collision_with_mouse(self) -> None:
+        
+        mouse_position = pygame.mouse.get_pos()
+        distance_vector = self.position - mouse_position
+
+        if distance_vector.magnitude() <= self.radius - ALLOWED_OVERLAP_OFFSET:
+            self.colliding_force += distance_vector.normalize()
